@@ -1,2 +1,2 @@
-package dhwutil
+package goutil
 

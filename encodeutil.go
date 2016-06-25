@@ -1,4 +1,4 @@
-package dhwutil
+package goutil
 
 import (
 	"crypto/sha1"

@@ -3,6 +3,8 @@ package goutil
 import (
 	"time"
 	"errors"
+	"log"
+	"strconv"
 )
 
 const (
@@ -97,7 +99,7 @@ func UnixTimeToStr(format string, t1 int64) (timeStr string, err error) {
 func StrToUnixTime(format, t1 string) (unixTime int64, err error) {
 	if format == YYYY || format == YYYY_MM_DD__HI_MM_SS || format == YYYY_MM_DD ||
 	format == YYYY_MM || format == YYYYMM || format == YYYYMMDDHIMMSS || format == YYYYMMDD {
-		tm, err := time.Parse(format, t1)
+		tm, err := time.ParseInLocation(format, t1, time.Local)
 		if err != nil {
 			return 0, err
 		}
@@ -105,4 +107,78 @@ func StrToUnixTime(format, t1 string) (unixTime int64, err error) {
 	}
 	return 0, errors.New("暂时不支持的日期格式")
 
+}
+
+//获取纳秒级时间差
+func GetCurrentNano() int64 {
+	return time.Now().UnixNano()
+}
+
+//获取指定时间前几天时间
+func GetBeforeDayTime(format, nowTime string, day int64) string {
+
+	uT, err := StrToUnixTime(format, nowTime)
+	if err != nil {
+		log.Println(err.Error())
+		return ""
+	}
+	preUt := uT - day * 24 * 60 * 60
+	sT, err := UnixTimeToStr(format, preUt)
+
+	if err != nil {
+		log.Println(err.Error())
+		return ""
+	}
+	return sT
+}
+
+func GetBeforeSecondTime(format, nowTime string, second int64) string {
+
+	uT, err := StrToUnixTime(format, nowTime)
+	if err != nil {
+		log.Println(err.Error())
+		return ""
+	}
+	preUt := uT - second
+	sT, err := UnixTimeToStr(format, preUt)
+
+	if err != nil {
+		log.Println(err.Error())
+		return ""
+	}
+	return sT
+}
+
+//获取当月的开始时间,例:2016-06-08 00:00:00
+func GetFirstDayTimeInMonth() string {
+	year, mon, _ := time.Now().Date()
+	forMon := ""
+	if mon < 10 {
+		forMon = "0" + strconv.Itoa(int(mon))
+	} else {
+		forMon = strconv.Itoa(int(mon))
+	}
+	strTime := strconv.Itoa(year) + "-" + forMon + "-01 00:00:00"
+	return strTime
+}
+
+//取当月的结束时间,如: 2016-06-30 23:59:59
+func GetLastDayTimeInMonth() string {
+	firstTime := ""
+	year, mon, _ := time.Now().Date()
+	nextM := int(mon)
+	if nextM < 12 {
+		nextM = nextM + 1
+	} else {
+		nextM = 1
+		year = year + 1
+	}
+	forMon := ""
+	if nextM < 10 {
+		forMon = "0" + strconv.Itoa(nextM)
+	} else {
+		forMon = strconv.Itoa(nextM)
+	}
+	firstTime = strconv.Itoa(year) + "-" + forMon + "-01 00:00:00"
+	return GetBeforeSecondTime(YYYY_MM_DD__HI_MM_SS, firstTime, 1)
 }

@@ -43,8 +43,9 @@ func RandInt64(min, max int64) int64 {
 	return i.Int64()
 }
 
+
 func RandUUID32() string {
-	//GetUUID32
+
 	b := make([]byte, 48)
 	if _, err := io.ReadFull(cr.Reader, b); err != nil {
 		return ""

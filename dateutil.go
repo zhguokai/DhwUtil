@@ -7,14 +7,18 @@ import (
 	"strconv"
 )
 
+//日期类型
+type TimeFormat string
+
 const (
-	YYYY_MM_DD__HI_MM_SS = "2006-01-02 15:04:05"
-	YYYY_MM_DD = "2006-01-02"
-	YYYY_MM = "2006-01"
-	YYYY = "2006"
-	YYYYMMDDHIMMSS = "20060102150405"
-	YYYYMMDD = "20060102"
-	YYYYMM = "200601"
+	YYYY_MM_DD__HI_MM_SS TimeFormat = "2006-01-02 15:04:05"
+	YYYY_MM_DD TimeFormat = "2006-01-02"
+	YYYY_MM TimeFormat = "2006-01"
+	YYYY TimeFormat = "2006"
+	YYYYMMDDHIMMSS TimeFormat = "20060102150405"
+	YYYYMMDD TimeFormat = "20060102"
+	YYYYMM TimeFormat = "200601"
+	YYYYMMDDHIMMSSsss TimeFormat="200601021504059999"
 )
 
 // GetCurrentDate 获取当前月份,
@@ -29,6 +33,10 @@ func GetCurrentMonth() string {
 // 示例:2016-06-05
 func GetCurrentDate() string {
 	return time.Now().Format(YYYY_MM_DD)
+}
+//获取当前时间
+func GetFormatTime(format TimeFormat) (string) {
+	return time.Now().Format(format)
 }
 
 // GetCurrentTime 获取当前时间,

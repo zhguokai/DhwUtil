@@ -6,6 +6,8 @@ import (
 	"math/rand"
 	"math/big"
 	cr "crypto/rand"
+	"io"
+	"encoding/base64"
 )
 //生成随机数字
 func GetRandomNum(length int) string {
@@ -39,4 +41,13 @@ func RandInt64(min, max int64) int64 {
 		i, _ = cr.Int(cr.Reader, maxBigInt)
 	}
 	return i.Int64()
+}
+
+func RandUUID32() string {
+	//GetUUID32
+	b := make([]byte, 48)
+	if _, err := io.ReadFull(cr.Reader, b); err != nil {
+		return ""
+	}
+	return strings.ToUpper(EncodeMd5(base64.URLEncoding.EncodeToString(b)))
 }

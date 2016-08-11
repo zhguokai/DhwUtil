@@ -171,6 +171,20 @@ func GetFirstDayTimeInMonth() string {
 	return strTime
 }
 
+func GetPreMonth() string {
+	year, mon, _ := time.Now().Date()
+	forMon := ""
+	if mon == 1 {
+		forMon = "12"
+		year = year - 1
+	} else if mon <= 10 {
+		forMon = "0" + strconv.Itoa(int(mon - 1))
+	} else {
+		forMon = strconv.Itoa(int(mon))
+	}
+	strTime := strconv.Itoa(year) + "-" + forMon
+	return strTime
+}
 //取当月的结束时间,如: 2016-06-30 23:59:59
 func GetLastDayTimeInMonth() string {
 	firstTime := ""
